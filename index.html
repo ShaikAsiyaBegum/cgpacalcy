@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CGPA & Percentage Calculator</title>
+<style>
+  body {
+    margin: 0;
+    font-family: "Segoe UI", sans-serif;
+    background: linear-gradient(135deg, #fff5f5, #fbeaea, #fdfdf5);
+    color: #5a2a2a;
+    min-height: 100vh;
+    overflow-x: hidden;
+    padding: 40px;
+    position: relative;
+  }
+
+  h1 {
+    text-align: center;
+    color: #b94f63;
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+  }
+  p {
+    text-align: center;
+    color: #704444;
+    margin-bottom: 30px;
+  }
+
+  .calculator {
+    max-width: 500px;
+    margin: auto;
+    background: #fff8f7;
+    border: 2px solid #e5bcbc;
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 6px 16px rgba(185, 79, 99, 0.3);
+  }
+
+  label {
+    display: block;
+    margin: 12px 0 6px;
+    font-weight: 600;
+    color: #8b3e4a;
+  }
+
+  input {
+    width: 95%;
+    padding: 10px;
+    border: 1.5px solid #dca3a3;
+    border-radius: 6px;
+    font-size: 1rem;
+    background: #fffdfd;
+    color: #5a2a2a;
+  }
+
+  button {
+    margin-top: 20px;
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    background: #b94f63;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  button:hover {
+    background: #d46a7c;
+  }
+
+  .output {
+    margin-top: 20px;
+    background: #fff1f1;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: inset 0 0 10px rgba(185,79,99,0.2);
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-align: center;
+    color: #5a2a2a;
+    line-height: 1.5;
+    display: none;
+  }
+
+  /* Pink Bubble styling */
+  .bubble {
+    position: fixed;
+    bottom: -80px;
+    background: radial-gradient(circle at 100% 100%, olive, red);
+    border-radius: 50%;
+    opacity: 0.8;
+    pointer-events: none;
+    animation: rise linear forwards;
+    box-shadow: 0 0 8px rgba(255, 182, 193, 0.6);
+  }
+  @keyframes rise {
+    0% { transform: translateY(0) scale(1); opacity: 0.8; }
+    100% { transform: translateY(-110vh) translateX(var(--x-move)) scale(var(--scale)); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<h1>🌸 CGPA & Percentage Calculator 🌸</h1>
+<p>Calculate your academic performance✨</p>
+
+<div class="calculator">
+  <label for="cgpa">Enter your CGPA (0 - 10):</label>
+  <input type="number" id="cgpa" step="0.01" placeholder="e.g. 8.5">
+
+  <button onclick="calculate()">Calculate</button>
+
+  <div id="result" class="output"></div>
+</div>
+
+<script>
+  function calculate() {
+    const cgpa = parseFloat(document.getElementById("cgpa").value);
+    const resultBox = document.getElementById("result");
+
+    if (isNaN(cgpa) || cgpa < 0 || cgpa > 10) {
+      resultBox.style.display = "block";
+      resultBox.innerHTML = "⚠️ Please enter a valid CGPA between 0 and 10.";
+      triggerBubbles();
+      return;
+    }
+
+    const percentage = cgpa * 9.5;
+    let message = "";
+
+    if (percentage >= 85) {
+      message = "🌟 Excellent! You're shining bright. Keep it up!";
+    } else if (percentage >= 70) {
+      message = "💪 Great work! You’re on the right track.";
+    } else if (percentage >= 50) {
+      message = "✨ Good job! With more effort, you can reach higher.";
+    } else {
+      message = "🌱 Don’t worry! Every flower blooms in its own time. Keep going!";
+    }
+
+    resultBox.style.display = "block";
+    resultBox.innerHTML = `🎓 Your CGPA: <b>${cgpa.toFixed(2)}</b><br>
+                           📊 Equivalent Percentage: <b>${percentage.toFixed(2)}%</b><br><br>
+                           ${message}`;
+
+    triggerBubbles();
+  }
+
+  // Pink bubble effect
+  function triggerBubbles() {
+    for (let i = 0; i < 12; i++) {
+      const bubble = document.createElement("div");
+      bubble.classList.add("bubble");
+
+      const size = Math.random() * 25 + 20;
+      bubble.style.width = size + "px";
+      bubble.style.height = size + "px";
+      bubble.style.left = Math.random() * window.innerWidth + "px";
+
+      const xMove = (Math.random() * 150 - 75) + "px";
+      bubble.style.setProperty("--x-move", xMove);
+
+      bubble.style.setProperty("--scale", (Math.random() * 0.6 + 0.7).toFixed(2));
+      bubble.style.animationDuration = (Math.random() * 5 + 5) + "s";
+
+      document.body.appendChild(bubble);
+      bubble.addEventListener("animationend", () => bubble.remove());
+    }
+  }
+</script>
+
+</body>
+</html>
